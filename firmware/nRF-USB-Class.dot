@@ -1,0 +1,58 @@
+digraph {
+	graph [
+		style = "dotted";
+		rankdir = "LR";
+		];
+	
+	node [
+		fontname = "Arial";
+		shape = none;
+		fixedsize = false;
+		];
+
+	edge [
+		labelfontname = "Arial";
+		labelfontsize = 9;
+		];
+	
+	subgraph cluster_app_usbd {
+		app_usbd [ label = "module\n* sof-events-count\n* event-frame\n* sustate" ];
+	
+		app_usbd_config [ label = "config\n* ev-handler\n* ev-isr-handler\n* ev-state-proc\* enable-sof"; ];
+
+		app_usbd_class_inst [ label = "class-instance"; ];
+		app_usbd_class_data [ label = "class-data"; ];
+		app_usbd_class_methods [ label = "class-methods"; ];
+		app_usbd_class_iface_conf [ label = "class-iface-config"; ];
+
+		app_usbd_ep_conf [ label = "ep_config\n* event-handler"; ];
+
+		app_usbd_evt [ label = "event\n* ::type" ];
+		app_usbd_setup_evt [ label = "setup-event\n* ::type"; ];
+		app_usbd_complex_evt [ label = "complex-event\n* ::type"; ];
+		app_usbd_internal_evt [ label = "internal-event\n* ::type"; ];
+
+		app_usbd_internal_queue_event [ label = "::internal-queue-event"; ];
+		}
+
+
+	subgraph cluster_nrf_drv_usbd {
+		nrf_drv_usbd_ep [ label = "ep"; ];
+		}
+
+
+	app_usbd -> app_usbd_config [ arrowhead = dot; taillabel = "current-config"; ];
+	app_usbd -> app_usbd_ep_conf [ arrowhead = dot; headlabel = "[]"; taillabel = "ep-in-config"; ];
+	app_usbd -> app_usbd_ep_conf [ arrowhead = dot; headlabel = "[]"; taillabel = "ep-out-config"; ];
+	app_usbd -> app_usbd_class_inst [ arrowhead = odot; headlabel = "[]"; taillabel = "cinst"; ];
+	app_usbd -> app_usbd_class_inst [ arrowhead = odot; headlabel = "[]"; taillabel = "sof_cinst"; ];
+	app_usbd -> app_usbd_class_inst [ arrowhead = odot; headlabel = "[]"; taillabel = "sof_interrupt_cinst"; ];
+
+	app_usbd_ep_conf -> app_usbd_class_inst [ arrowhead = "odot"; taillabel = "cinst"; ];
+
+	app_usbd_class_inst -> app_usbd_class_data [ arrowhead = "dot"; ];
+	app_usbd_class_inst -> app_usbd_class_methods [ arrowhead = odot; ];
+	app_usbd_class_inst -> app_usbd_class_iface_conf [ arrowhead = dot; headlabel = "[]"; ];
+
+	nrf_drv_usbd_ep -> app_usbd_ep_conf;
+	}

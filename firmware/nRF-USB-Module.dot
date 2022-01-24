@@ -1,0 +1,96 @@
+digraph {
+	graph [
+		style = "dotted";
+		];
+	
+	node [
+		fontname = "Arial";
+		shape = plain;
+		];
+	
+	main;
+	
+	subgraph cluster_bsp {
+		bsp;
+		}
+	
+	subgraph cluster_app {
+		app_button;
+		app_timer;
+		app_usbd;
+		}
+	
+	# integration/nrfx/legacy
+	subgraph cluster_nrf {
+		nrf_drv_clock;
+		nrf_drv_power;
+		nrf_drv_usbd;
+		}
+	
+	# modules/nrfx/drivers
+	subgraph cluster_nrfx {
+		nrfx_clock;
+		nrfx_power;
+		nrfx_usbd;
+		}
+	
+	# modules/nrfx/hal
+	subgraph cluster_hal {
+		nrf_clock;
+		nrf_power;
+		nrf_usbd;
+		}
+	
+	subgraph cluster_nRF52 {
+		RTC1;
+		SWI;
+		};
+	
+	main -> {
+		bsp;
+		app_timer;
+		app_usbd;
+		nrf_drv_clock;
+		}
+	
+	bsp -> {
+		app_button;
+		app_timer;
+		}
+	
+	app_timer -> {
+		RTC1;
+		SWI;
+		}
+	
+	app_usbd -> {
+		nrf_drv_clock;
+		nrf_drv_power;
+		nrf_drv_usbd;
+		nrf_power;
+		}
+	
+	nrf_drv_clock -> {
+		nrfx_clock;
+		}
+	
+	nrf_drv_power -> {
+		nrfx_power;
+		}
+	
+	nrf_drv_usbd -> {
+		nrfx_usbd;
+		}
+	
+	nrfx_clock -> {
+		nrf_clock;
+		}
+	
+	nrfx_power -> {
+		nrf_power;
+		}
+	
+	nrfx_usbd -> {
+		nrf_usbd;
+		}
+	}
